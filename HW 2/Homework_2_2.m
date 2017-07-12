@@ -50,7 +50,13 @@ title('Part b')
 
 % Part c
 
-
+x = -5:5;  y = runge(x);
+xx = linspace(-5, 5);
+yy = spline(x,y,xx);
+figure
+plot(x,y,'o',xx,yy)
+legend('Runges function','Cubic Spline')
+title('Part c')
 
 function [ y ] = runge ( x )
     y = 1 ./ (1 + x.^2);
