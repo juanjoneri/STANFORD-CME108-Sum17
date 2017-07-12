@@ -1,0 +1,42 @@
+%% Problem 2
+
+syms t
+
+% Part a
+
+X = -5:1:5;
+Y = runge(X);
+
+A = [];
+for i = 1:11
+    A = [A ; row(X(i), 10)];
+end
+
+x = A\Y';
+T = row (t, 10);
+P = T * x;
+
+X = linspace(-5, 5);
+y1 = vpa (subs( P, t, X));
+y2 = runge(X);
+
+plot(X,y1,'b--',X,y2,'r')
+legend('Lagrange Polynomial','Runges function')
+
+% Part b
+
+function [ y ] = runge ( x )
+    y = 1 ./ (1 + x.^2);
+end
+
+function [ C ] = myCos ( n )
+    J = 1
+    C = ;
+end
+
+function [ A ] = row ( x, order )
+    A = [];
+    for i = 0:order
+        A = [A, x^i];
+    end
+end
