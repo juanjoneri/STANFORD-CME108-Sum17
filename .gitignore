@@ -1,3 +1,5 @@
 *.asv
 
-html/*
+*/html/*
+
+*.png
