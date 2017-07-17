@@ -1,5 +1,4 @@
 *.asv
 
-*/html/*
-
+html/
 *.png
