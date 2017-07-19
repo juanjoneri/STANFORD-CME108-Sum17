@@ -10,37 +10,43 @@ b = [ 151
        16
       -32 ];
    
-gaussEliminate(A)
+[l, u] = gaussEliminate(A)
 
 lu(A)
 
 % Gauss Elimination
-function [ A ] = gaussEliminate ( A )
+function [ L, U ] = gaussEliminate ( A )
     n = size(A, 1);
+    L = eye(n);
+    U = A;
+    
     for k = 1:n-1 % elimination passes
         % make pos kk be largest from column k in lower diag
-        A = maxPivot(A, k)
+        [L, U] = maxPivot(L, U, k);
         
         for i = k+1:n % rows
-            tmp = A(i,k)/A(k,k);
+            tmp = U(i,k)/U(k,k);
             for j=1:n
-                A(i,j) = A(i,j)-tmp*A(k,j);
+                U(i,j) = U(i,j)-tmp*U(k,j);
             end
+            L(i,k) = tmp;
         end
     end
 end
 
-function [ A ] = maxPivot ( A, k )
-    n = size(A, 1);
-    k_ = A(k,:);
+function [ L, U ] = maxPivot ( L, U, k )
+    n = size(U, 1);
+    k_ = U(k,:);
+    k__ = L(k,:);
     
-    [M, I] = max(abs(A(k:n, k)));
+    [M, I] = max(abs(U(k:n, k)));
     j = k + I - 1;
-    j_ = A(j,:);
+    j_ = U(j,:);
+    j__ = L(j,:);
     
     
-    A(k,:) = j_;
-    A(j,:) = k_;
+    U(k,:) = j_; L(k,:) = j__;
+    U(j,:) = k_; L(j,:) = k__;
 end
 
 % Back Substitution
