@@ -10,12 +10,12 @@ b = [ 151
        16
       -32 ];
    
-[l, u] = gaussEliminate(A)
+LU = gaussEliminate(A)
 
 lu(A)
 
 % Gauss Elimination
-function [ L, U ] = gaussEliminate ( A )
+function [ LU ] = gaussEliminate ( A )
     n = size(A, 1);
     L = eye(n);
     U = A;
@@ -32,6 +32,7 @@ function [ L, U ] = gaussEliminate ( A )
             L(i,k) = tmp;
         end
     end
+    LU = joinDiags(L, U);
 end
 
 function [ L, U ] = maxPivot ( L, U, k )
@@ -47,6 +48,10 @@ function [ L, U ] = maxPivot ( L, U, k )
     
     U(k,:) = j_; L(k,:) = j__;
     U(j,:) = k_; L(j,:) = k__;
+end
+
+function [ O ] = joinDiags ( L, U )
+    O = triu(U) + tril(L);
 end
 
 % Back Substitution

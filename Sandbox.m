@@ -1,5 +1,7 @@
 A = magic(4)
-maxPivot ( A, 3 )
+B = ones(4)
+
+joinDiags(A, B)
 
 %[M, I] = max(A(2:4,1))
 
@@ -8,6 +10,10 @@ function [ A ] = swapCol ( A, i, j )
     k_lg = A(j,:);
     A(i,:) = k_lg;
     A(j,:) = k;
+end
+
+function [ O ] = joinDiags ( U, L )
+    O = triu(U) + tril(L);
 end
 
 function [ A ] = maxPivot ( A, k )
