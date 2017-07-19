@@ -9,20 +9,19 @@ b = [ 151
       103
        16
       -32 ];
-   
-LU = gaussEliminate(A)
 
-lu(A)
+[L, U, P] = gaussEliminate(A)
+[L_, U_, P_] = lu(A)
+
 
 % Gauss Elimination
-function [ LU ] = gaussEliminate ( A )
+function [ L, U, P ] = gaussEliminate ( A )
     n = size(A, 1);
-    L = eye(n);
-    U = A;
+    L = eye(n); U = A; P = eye(n);
     
     for k = 1:n-1 % elimination passes
         % make pos kk be largest from column k in lower diag
-        [L, U] = maxPivot(L, U, k);
+        [L, U, P] = maxPivot(L, U, P, k);
         
         for i = k+1:n % rows
             tmp = U(i,k)/U(k,k);
@@ -32,22 +31,24 @@ function [ LU ] = gaussEliminate ( A )
             L(i,k) = tmp;
         end
     end
-    LU = joinDiags(L, U);
+    L = myTril(L);
 end
 
-function [ L, U ] = maxPivot ( L, U, k )
+function [ L, U, P ] = maxPivot ( L, U, P, k )
     n = size(U, 1);
     k_ = U(k,:);
     k__ = L(k,:);
+    k___ = P(k,:);
     
     [M, I] = max(abs(U(k:n, k)));
     j = k + I - 1;
     j_ = U(j,:);
     j__ = L(j,:);
+    j___ = P(j,:);
     
     
-    U(k,:) = j_; L(k,:) = j__;
-    U(j,:) = k_; L(j,:) = k__;
+    U(k,:) = j_; L(k,:) = j__; P(k,:) = j___;
+    U(j,:) = k_; L(j,:) = k__; P(j,:) = k___;
 end
 
 function [ O ] = joinDiags ( L, U )
@@ -55,10 +56,27 @@ function [ O ] = joinDiags ( L, U )
 end
 
 % Back Substitution
-function [ x ] = BackSubstitute ( A, b )
+function [ x ] = backSubstitute ( A, b )
+    n = size(A, 1);
     x = zeros(1, n);
     x(n) = b(n)/A(n,n);
-    for i=n-1:-1:1
-        x(i) = (b(n)-sum(A(i,i+1:n).*x(i+1:n)))/A(i,i);
+    for i = n-1:-1:1
+        x(i) = (b(i)-sum(A(i,i+1:n).*x(i+1:n)))/A(i,i);
     end
+end
+
+% Forward Substitution
+function [ x ] = forwardSubstitute ( A, b )
+    n = size(A, 1);
+    x = zeros(1, n);
+    x(1) = b(1)/A(1,1);
+    for i = 2:n
+        x(i) = (b(i)-sum(A(i,1:i-1).*x(1:i-1)))/A(i,i);
+    end
+end
+
+function [ A ] = myTril ( A )
+    % Restore the ones in the diagonal of the L matrix
+    A = tril(A);
+    A(eye(size(A))~=0) = 1;
 end
