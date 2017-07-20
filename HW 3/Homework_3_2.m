@@ -5,17 +5,19 @@ A = [ 2 -1  0  0
       0 -1  2 -1
       0  0 -1  2 ];
   
-b = [
+f = [
     1
     1
     1
     1
-    ]
+    ];
+
+
+[L, U, P] = lu(A)
 
 [a, b, c] = getVectors(A);
 
-[l, b, f ] = gaussEliminate ( a, b, c, b )
-lu(A)
+[b, f] = gaussEliminate ( a, b, c, f )
 
 backSubstitute ( b, c, f )
 
@@ -37,10 +39,10 @@ function [ a, b, c ] = getVectors (A)
 end
 
 % Gauss tridiagonal elimination
-function [ l, b, f ] = gaussEliminate ( a, b, c, f )
+function [ b, f ] = gaussEliminate ( a, b, c, f )
     n = size(b, 1);
     l = zeros(1, n);
-    for j = 2:n % loop through n-1 elimination passes
+    for j = 2:n
         l(j) = a(j)/b(j-1);
         b(j) = b(j)-l(j)*c(j-1);
         f(j) = f(j)-l(j)*f(j-1);
