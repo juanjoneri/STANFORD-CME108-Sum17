@@ -31,7 +31,7 @@ x = backSubstitute(U, y)
 % Compare to actual solution
 A\b
 
-% Gauss Elimination
+% *% Gauss Elimination*
 function [ L, U, P ] = gaussEliminate ( A )
     n = size(A, 1);
     L = eye(n); U = A; P = eye(n);
@@ -75,7 +75,13 @@ function [ O ] = joinDiags ( L, U )
     O = triu(U) + tril(L);
 end
 
-% Back Substitution
+function [ A ] = myTril ( A )
+    % Restore the ones in the diagonal of the L matrix
+    A = tril(A);
+    A(eye(size(A))~=0) = 1;
+end
+
+% *Back Substitution*
 function [ x ] = backSubstitute ( A, b )
     n = size(A, 1);
     x = zeros(1, n);
@@ -85,7 +91,7 @@ function [ x ] = backSubstitute ( A, b )
     end
 end
 
-% Forward Substitution
+% *Forward Substitution*
 function [ x ] = forwardSubstitute ( A, b )
     n = size(A, 1);
     x = zeros(1, n);
@@ -93,10 +99,4 @@ function [ x ] = forwardSubstitute ( A, b )
     for i = 2:n
         x(i) = (b(i)-sum(A(i,1:i-1).*x(1:i-1)))/A(i,i);
     end
-end
-
-function [ A ] = myTril ( A )
-    % Restore the ones in the diagonal of the L matrix
-    A = tril(A);
-    A(eye(size(A))~=0) = 1;
 end
