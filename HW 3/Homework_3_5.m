@@ -1,13 +1,13 @@
 %% Problem 5
 
-repes = 12;
+repes = 7;
 
 log = zeros(repes, 1);
 for i = 1:repes
-    log(i) = simpson (@cos, pi/(2*2^i), 0, pi/2);
+    log(i) = compositeSimpson (i, @cos, pi/(2*2^i), 0, pi/2);
 end
 
-err = ones(repes, 1) - log;
+err = (ones(repes, 1) - log) .* 100
 
 rat = zeros(repes-1, 1);
 for i = 1:repes-1
@@ -28,4 +28,9 @@ function [ I ] = simpson (f, h, l, r)
     I = h/3 * I;
 end
 
+function [ I ] = compositeSimpson ( k, f, h, l, r)
+
+    I = ( 4*simpson(f, h/(2^k), l, r) - simpson(f, h/(2^(k-1)), l, r) ) / 3;
+    
+end
 
