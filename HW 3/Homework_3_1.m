@@ -13,6 +13,12 @@ b = [ 151
 % Apply LU decomposition to A to obtain the L, U, and P,
 [L, U, P] = gaussEliminate(A)
 
+% We can retreive (and if desired override A with) the LU factor is one
+% matrix
+
+LU = joinDiags(L, U)
+lu(A)
+
 % For any right hand side b, calculate Pb (column vector),
 b_ = P * b
 
@@ -46,6 +52,8 @@ function [ L, U, P ] = gaussEliminate ( A )
 end
 
 function [ L, U, P ] = maxPivot ( L, U, P, k )
+    % Swap pivot with row with highest magnitude in pivot position
+    % Store the transformation in the L and P matrices
     n = size(U, 1);
     k_ = U(k,:);
     k__ = L(k,:);
@@ -63,6 +71,7 @@ function [ L, U, P ] = maxPivot ( L, U, P, k )
 end
 
 function [ O ] = joinDiags ( L, U )
+    L(eye(size(L))~=0) = 0; % remove ones from L
     O = triu(U) + tril(L);
 end
 
