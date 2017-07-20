@@ -12,13 +12,17 @@ f = [
     1
     ];
 
+% Check the solution we should be getting
+A\f
 
-[L, U, P] = lu(A)
-
+% Retreive the elements of the tridiagonal matrix into vectors
 [a, b, c] = getVectors(A);
 
-[b, f] = gaussEliminate ( a, b, c, f )
+% Perform Gaussian elimination, get new b and f, c stays the same, a in now
+% full of 0
+[b, f] = gaussEliminate ( a, b, c, f );
 
+% Use back substitution to find the solution to the system
 backSubstitute ( b, c, f )
 
 % Retreive the vectors from the tridiagonal matrix
