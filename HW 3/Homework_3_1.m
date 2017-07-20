@@ -10,9 +10,20 @@ b = [ 151
        16
       -32 ];
 
+% Apply LU decomposition to A to obtain the L, U, and P,
 [L, U, P] = gaussEliminate(A)
-[L_, U_, P_] = lu(A)
 
+% For any right hand side b, calculate Pb (column vector),
+b_ = P * b
+
+% Use forward substitution to solve for y in equation Ly = Pb,
+y = forwardSubstitute(L, b_)
+
+% Use back substitution to solve for the unknowns x in equation Ux = y.
+x = backSubstitute(U, y)
+
+% Compare to actual solution
+A\b
 
 % Gauss Elimination
 function [ L, U, P ] = gaussEliminate ( A )
