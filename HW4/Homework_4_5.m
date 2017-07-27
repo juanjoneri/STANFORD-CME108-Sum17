@@ -2,7 +2,16 @@
 
 syms x
 
-Dn (@f, 1, 1, 4, 4)
+fprintf('a) \n\n')
+
+ans = Dn (@f, 1, 1, 4, 4);
+
+fprintf('\nb)\n\n %f percent error in final answer \n', percentErr(1, ans));
+
+
+function [ err ] = percentErr (act, com)
+    err = 100 * abs(com - act) / act;
+end
 
 function [ y ] = f (x)
     y = log(x^2 + 1);
