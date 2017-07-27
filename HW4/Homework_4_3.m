@@ -1,6 +1,7 @@
 %% Problem 3
 
 syms x
+digits(16)
 
 X = linspace(0, 2);
 
@@ -8,10 +9,10 @@ for n = [2, 4, 8]
 
     figure
     plot(X,f(X,n))
-    legend('n = ')
+    legend(strcat('(x-1)^', num2str(n)))
 
     [x, k] = Newton(@f, n, @fp, 1.1, 1.e-8);
-    fprintf('Testing (x-1)^%f near 1.1 gives root at %f after %f iterations \n', n, x, k);
+    fprintf('Testing (x-1)^%i near 1.1 gives root at %f after %i iterations \n', n, x, k);
 
 end
 
@@ -33,7 +34,7 @@ function [ x_zero, itr ] = Newton (f, n, fprime, x0, tol)
     while ~stop
         x(k+1) = x(k)-y(k)/yprime(k);
         y(k+1) = f(x(k+1), n);
-        if abs(y(k)) <= tol | k > 1000
+        if abs(x(k+1)-x(k)) <= tol
             itr = k+1; % total number of iterations
             x_zero = x(k+1); % zero of function
             stop = 1;
