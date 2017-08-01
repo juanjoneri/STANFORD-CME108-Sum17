@@ -6,10 +6,11 @@ clear
 x = [0;1]; % Initial guess
 residual = 1;
 k = 0;
-fprintf(' k x y abs(f)\n')
+fprintf('  k   x          y          abs(f)\n')
+fprintf('  -   --------   --------   --------\n')
 fprintf(' %2i %10.6f %10.6f %10.6f\n',k,x,residual)
 
-while residual > 1e-2
+while residual > 1e-6
     f = [cos(2*x(1))-cos(2*x(2))-0.4;
          2*(x(2)-x(1))+sin(2*x(2))-sin(2*x(1))-1.2];
 
