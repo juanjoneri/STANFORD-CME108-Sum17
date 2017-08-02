@@ -11,19 +11,36 @@ A = reshape([x; y],s(1)*s(2),2);
 % A(:,1) al x's | A(:,2) al y's
 % A(1,:) first pair (x, y)
 
-%Z = banana(x, y);
-%surf(x, y, Z)
-
 % 2.1 Select an initial guess of position vector
 X0 = [-1,2];
-% 2.2 and evaluate the grad
-G0 = gradient(X0);
 
-A = fminbnd(@(a) banana(X0 - a.*G0) , 0, 2);
+[X1, k] = steepest(X0, @banana, @gradient, 1.e-6)
+
+function [X1, k] = steepest (X0, f, grad, tol)
+    
+    stop = 0;
+    k = 1;
+    
+    while ~stop
+        % 2.2 and evaluate the grad
+        G0 = grad(X0);
+        % 3 Use matlab to find the value of alpha that minimizes the new pair x, y
+        A = fminbnd(@(a) f(X0 - a.*G0) , 0, 2);
+        % 4 Calculate the new position
+        X1 = X0 - A.*G0;
+        fprintf('%f     %f\n', X1(1), X1(2));
+        % 5 Calculate the residual to stop when done
+        if (norm(X1 - X0) < tol) || (k > 1000)
+           stop = 1; 
+        end
+        X0 = X1;
+        k = k+1;
+    end
+end
 
 function [z] = banana (X)
     x = X(1); y = X(2);
-    z = 100 .* (y - x.^2).^2 + (1 - x.^2);
+    z = 100 .* (y - x.^2).^2 + (1 - x).^2;
 end
 
 % 1 Establish the analytical expression for the gradient
