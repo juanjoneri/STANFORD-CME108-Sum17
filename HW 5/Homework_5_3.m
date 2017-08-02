@@ -16,6 +16,10 @@ X0 = [-1,2];
 [X, k] = steepest(X0, @banana, @gradient, 1.e-6);
 scatter3(X(:,1), X(:,2), banana(X))
 
+last = size(X);
+answer = X(last(1),:);
+fprintf('a) Implement steepest descent method.\nMin found after %3i iterations at x = %2.9f y = %2.9f \n',k, answer(1), answer(2))
+
 function [X, k] = steepest (X0, f, grad, tol)
     
     stop = 0;
