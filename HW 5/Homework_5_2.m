@@ -9,11 +9,20 @@ xr = 3;
 
 [k, x, y] = bisect(xl, xr, 1e-8, @f);
 
-fprintf(' Solution converged after %3i iterations at x = %f y = %2.9f \n',k, x, y)
+fprintf('a)\nRoot found after %3i iterations at x = %f y = %2.9f \n',k, x, y)
 
-X = fminsearch(@f, 0.5)
-[x, k] = newtonMin(0.5, 1e-8, @fp, @fpp)
+options = optimset('tolX', 1.e-6);
+[X_m,FVAL,EXITFLAG,OUTPUT] = fminsearch(@f, 0.5, options);
+[X_j, k] = newtonMin(0.5, 1e-6, @fp, @fpp);
 
+fprintf('\nb)\nMin found after %3i iterations at x = %f using fminsearch \n',OUTPUT.iterations, X_m)
+fprintf('Min found after %3i iterations at x = %f using Newton \n',k, X_j)
+
+fprintf('\n\nBoth algorithms converge to the same min of the function when\n')
+fprintf('a tolerance of 10^(-6) is set, however Matlabs fminsearch takes more iterations\n')
+fprintf('this is provably due to the fact that matlab does not have the extact values\n')
+fprintf('for the first and second derivatives of the function f and thus needs to\n')
+fprintf('compute them numerically')
 
 function [x, k] = newtonMin (x0, tol, fp, fpp)
     k = 0;
