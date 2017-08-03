@@ -2,7 +2,7 @@
 clear
 
 l = -4;
-step = 0.1; 
+step = 0.5; 
 r =  4;
 lines = 20;
 
@@ -14,9 +14,10 @@ X0 = [-1,2];
 
 [X, k] = steepest(X0, @banana, @gradient, 1.e-6);
 figure
-contour(Xs, Ys, Zs, lines)
+mesh(Xs, Ys, Zs)
 hold on
-scatter3(X(:,1), X(:,2), banana(X))
+plot3(X(:,1), X(:,2), banana(X) + 0.5e3, 'Marker' , 'o');
+view(-135, 60);
 title('Steepest Descent')
 
 last = size(X);
@@ -25,9 +26,10 @@ fprintf('a) Implement Steepest descent method.\nMin found after %3i iterations a
 
 [X, k] = conjugate(X0, @banana, @gradient, 1.e-6);
 figure
-contour(Xs, Ys, Zs, lines)
+mesh(Xs, Ys, Zs)
 hold on
-scatter3(X(:,1), X(:,2), banana(X))
+plot3(X(:,1), X(:,2), banana(X) + 0.5e3, 'Marker' , 'o')
+view(-135, 60);
 title('Conjugate Gradient')
 
 last = size(X);
