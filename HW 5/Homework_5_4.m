@@ -7,7 +7,10 @@ xlabel('position of e');
 ylabel('time to travel');
 title('sketch');
 
-newtonMin(0.5, 1e-6, @timep, @timepp)
+[x, k] = newtonMin(0.5, 1e-6, @timep, @timepp);
+
+fprintf('After %3i steps Newton-Raphson found a min at e = %2.9f\n', k, x);
+fprintf('\n\nThis seems to agree with what we found in the plot');
 
 function [x, k] = newtonMin (x0, tol, fp, fpp)
     k = 0;
