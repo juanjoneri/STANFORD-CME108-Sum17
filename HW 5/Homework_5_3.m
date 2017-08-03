@@ -1,9 +1,10 @@
 %% Problem 3
 clear
 
-l = -2.5;
+l = -4;
 step = 0.1; 
-r =  2.5;
+r =  4;
+lines = 20;
 
 [Xs, Ys] = meshgrid(l:step:r,l:step:r);
 Zs = bananaPlot(Xs, Ys);
@@ -13,16 +14,25 @@ X0 = [-1,2];
 
 [X, k] = steepest(X0, @banana, @gradient, 1.e-6);
 figure
-contour(Xs, Ys, Zs)
+contour(Xs, Ys, Zs, lines)
 hold on
 scatter3(X(:,1), X(:,2), banana(X))
+title('Steepest Descent')
 
 last = size(X);
 answer = X(last(1),:);
-fprintf('a) Implement steepest descent method.\nMin found after %3i iterations at x = %2.9f y = %2.9f \n',k, answer(1), answer(2))
+fprintf('a) Implement Steepest descent method.\nMin found after %3i iterations at x = %2.9f y = %2.9f \n',k, answer(1), answer(2))
 
-[X, k] = conjugate(X0, @banana, @gradient, 1.e-6)
+[X, k] = conjugate(X0, @banana, @gradient, 1.e-6);
+figure
+contour(Xs, Ys, Zs, lines)
+hold on
+scatter3(X(:,1), X(:,2), banana(X))
+title('Conjugate Gradient')
 
+last = size(X);
+answer = X(last(1),:);
+fprintf('\nb) Implement Conjugate gradient method.\nMin found after %3i iterations at x = %2.9f y = %2.9f \n',k, answer(1), answer(2))
 
 
 function [Xs, k] = conjugate (X0, f, grad, tol)
@@ -47,7 +57,7 @@ function [Xs, k] = conjugate (X0, f, grad, tol)
         G2 = grad(X2);
         R2 = -G2;
         % 3 Compute adjustment factor
-        B2 = max( 0, dot( R2', (R2 - R1) ) / dot( R1', R1 ) )
+        B2 = max( 0, dot( R2', (R2 - R1) ) / dot( R1', R1 ) );
         % 4 Update the search direction from steepest direction:
         P2 = R2 + B2.*P1;
         % 5 Perform line search:
