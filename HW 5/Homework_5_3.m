@@ -7,18 +7,66 @@ r =  2.5;
 
 [Xs, Ys] = meshgrid(l:step:r,l:step:r);
 Zs = bananaPlot(Xs, Ys);
-contour(Xs, Ys, Zs)
-hold on
 
 % 2.1 Select an initial guess of position vector
 X0 = [-1,2];
 
 [X, k] = steepest(X0, @banana, @gradient, 1.e-6);
+figure
+contour(Xs, Ys, Zs)
+hold on
 scatter3(X(:,1), X(:,2), banana(X))
 
 last = size(X);
 answer = X(last(1),:);
 fprintf('a) Implement steepest descent method.\nMin found after %3i iterations at x = %2.9f y = %2.9f \n',k, answer(1), answer(2))
+
+[X, k] = conjugate(X0, @banana, @gradient, 1.e-6)
+
+
+
+function [Xs, k] = conjugate (X0, f, grad, tol)
+    
+    X1 = X0;
+    stop = 0;
+    k = 1;
+    
+    Xs(k, 1) = X1(1);
+    Xs(k, 2) = X1(2);
+    G1 = grad(X1);
+    R1 = -G1;
+    P1 = R1;
+    A1 = fminbnd(@(a) f(X1 + a.*P1) , 0, 3);
+    X2 = X1 + A1.*P1;
+    
+    while ~stop
+        % Store all intermediate steps for plt
+        Xs(k, 1) = X2(1);
+        Xs(k, 2) = X2(2);
+        % 2.2 Calculate steepest direction
+        G2 = grad(X2);
+        R2 = -G2;
+        % 3 Compute adjustment factor
+        B2 = max( 0, dot( R2', (R2 - R1) ) / dot( R1', R1 ) )
+        % 4 Update the search direction from steepest direction:
+        P2 = R2 + B2.*P1;
+        % 5 Perform line search:
+        A2 = fminbnd(@(a) f(X2 + a.*P2), 0, 3);
+        % 6 Calculate the new position
+        X3 = X2 + A2.*P2;
+        % 7 Calculate the residual to stop when done
+        if (norm(X3 - X2) < tol) || (k > 2000)
+           stop = 1;
+           Xs(k, 1) = X3(1);
+           Xs(k, 2) = X3(2);
+        end
+        X2 = X3;
+        R1 = R2;
+        P1 = P2;
+        
+        k = k+1;
+    end
+end
 
 function [X, k] = steepest (X0, f, grad, tol)
     
