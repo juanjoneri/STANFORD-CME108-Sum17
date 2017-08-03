@@ -36,6 +36,8 @@ last = size(X);
 answer = X(last(1),:);
 fprintf('\nb) Implement Conjugate gradient method.\nMin found after %3i iterations at x = %2.9f y = %2.9f \n',k, answer(1), answer(2))
 
+answer = fminsearch(@banana, X0);
+fprintf('\nc) Use Matlab build in fminsearch\nMatlab fminsearhc found a min at x = %2.9f y = %2.9f \n',answer(1), answer(2))
 
 function [Xs, k] = conjugate (X0, f, grad, tol)
     
