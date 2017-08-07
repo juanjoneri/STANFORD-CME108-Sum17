@@ -1,4 +1,4 @@
-%% Problem 6
+%% Problem 1
 
 tspan = [0 50];
 y0 = 0.5;
@@ -9,14 +9,21 @@ xlabel('t')
 ylabel('y(t)')
 legend('RK4')
 axis([0.0 50 0.0 0.5])
+title('Water level in hemispherical tank of Radius 0.5m, with hole of radius 0.03m')
 
+nsteps = max(find(y_RK4>0))
+tempty = nsteps*h
 
 function yprime = f(t,y)
-    y = max(y, 0);
-    r0 = 0.03;
-    R = 0.5;
-    g = 9.81;
-    yprime = - r0^2 * (2*g*y)^(1/2) / (2*y*R - y^2);
+    if y > 0
+        r0 = 0.03;
+        R = 0.5;
+        g = 9.81;
+        yprime = - r0^2 * (2*g*y)^(1/2) / (2*y*R - y^2);
+    else
+        % Water lever cannot change if there's no water
+        yprime = 0;
+    end
 end
 
 function [t,y] = RK4(f,tspan,y0,h)
