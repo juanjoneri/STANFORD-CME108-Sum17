@@ -11,11 +11,11 @@ y2_0 = 0;
 y3_guess = [0 1];
 B = 1;
 
-tol = 0.01;
+tol = 1e-8;
 
 fprintf('\nIteration    C''''(0)        C''(10) \n')
 
-for n = 1:50
+for n = 1:15
 
     if n <= 2
         y3_0(n) = y3_guess(n);
@@ -37,11 +37,10 @@ end
 plot(x, y(:,1))
 hold on
 plot(x, y(:,2))
-hold on
-plot(x, y(:,3))
 
-xlabel('\eta')
-title('Flow of the fluid')
+xlabel('Scaled distance normal to the wall (\eta)')
+legend('f(\eta)','f''(\eta)')
+title('Flow of the fluid, boundary layer profile')
 
 function yp = flow(x, y, bet)
     yp(1) = y(2);
