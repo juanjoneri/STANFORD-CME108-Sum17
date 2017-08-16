@@ -4,7 +4,7 @@ clear
 x = [1;1;1]; % Initial guess
 residual = 1;
 k = 0;
-fprintf(' k x y z abs(f)\n')
+fprintf('  0   x          y          z          abs(f) \n')
 fprintf(' %2i %10.6f %10.6f %10.6f %10.6f \n',k,x,residual);
 while residual > 1e-6
 f = [8*x(1)*x(1)+x(2)*x(2)-x(3)+1; % compute the f system
