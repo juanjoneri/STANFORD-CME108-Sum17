@@ -1,6 +1,17 @@
 %% Problem 2
 clear; warning('off','all');
 
+[x, y] = bvp(0);
+
+plot(x, y(:,1))
+hold on
+plot(x, y(:,2))
+
+xlabel('Scaled distance normal to the wall (\eta)')
+legend('f(\eta)','U(\eta)')
+title('Boundary layer profile (\beta = 0)')
+figure
+
 [x, y] = bvp(0.18);
 
 plot(x, y(:,1))
@@ -12,7 +23,7 @@ legend('f(\eta)','U(\eta)')
 title('Boundary layer profile (\beta = 0.18)')
 figure
 
-[x, y] = bvp(0.3);
+[x, y] = bvp(0);
 
 plot(x, y(:,1))
 hold on
