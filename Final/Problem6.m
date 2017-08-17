@@ -14,10 +14,14 @@ x = linspace(xL,xR,N); % x(j) for plots
 %
 % Calculate tridiag matrix elements for interior points j=2,3,...,N?1
 %
-a(1:N-2) = x(2:N-1) - 1 - 1/2.*x(2:N-1).*h;
-b(1:N-2) = - 2*x(2:N-1) + 2 + h^2;
-c(1:N-2) = x(2:N-1) - 1 + 1/2.*x(2:N-1).*h;
-%
+c(1:N-2) = x(2:N-1) - 1 - 1/2.*x(2:N-1).*h;
+c(1) = 0 %not used
+c(N-1) = 80*h-2;
+b(1:N-1) = - 2*x(2:N) + 2 + h^2;
+b(N-1) = -4*h*(40*h-1-20*h^2)+(-80*h+2+h^2);
+a(1:N-2) = x(2:N-1) - 1 + 1/2.*x(2:N-1).*h;
+a(N-1) = 0; %not used
+
 % Calculate right hand side vector (source terms)
 %
 f(1) = -h^2*(1-h)^2;
