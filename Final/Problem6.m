@@ -1,26 +1,22 @@
 %% Problem 6
-
-% using finite difference with central difference in both
-%
 close all
-%
-N = 41; % number of discrete points
-% Calculate vector x for plotting
-%
+
+N = 41;
+
 xL = 0; % left boundary
 xR = 2; % right boundary
 h = (xR-xL)/(N-1); % grid spacing
 x = linspace(xL,xR,N); % x(j) for plots
-%
-% Calculate tridiag matrix elements for interior points j=2,3,...,N?1
-%
-c(1:N-2) = x(2:N-1) - 1 - 1/2.*x(2:N-1).*h;
-c(1) = 0 %not used
-c(N-1) = 80*h-2;
-b(1:N-1) = - 2*x(2:N) + 2 + h^2;
-b(N-1) = -4*h*(40*h-1-20*h^2)+(-80*h+2+h^2);
+
 a(1:N-2) = x(2:N-1) - 1 + 1/2.*x(2:N-1).*h;
-a(N-1) = 0; %not used
+a(N-1) = 80*h-2;
+
+b(1:N-2) = - 2*x(2:N-1) + 2 + h^2;
+b(N-1) = -4*h*(40*h-1-20*h^2)+(-80*h+2+h^2);
+
+c(1:N-2) = x(2:N-1) - 1 - 1/2.*x(2:N-1).*h;
+c(1) = 0; %not used
+c(N-1) = 0; %not used
 
 % Calculate right hand side vector (source terms)
 %
