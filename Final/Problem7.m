@@ -14,17 +14,17 @@ p = zeros(M,N);
 res = zeros(M,N);
 
 
-p(:,1)=0;                       %left side at 0
-p(:,N)=y;                       %Right side at y
-p(1,:)=p(2,:);                  %Derivative at upper boundary is 0
-p(M,:)=p(M-1,:);                %Derivative at lower boundary is 0
+p(:,1)=0;                       % Left side at 0
+p(:,N)=y;                       % Right side at y
+p(1,:)=p(2,:);                  % Derivative at upper boundary is 0
+p(M,:)=p(M-1,:);                % Derivative at lower boundary is 0
 
 j=2:N-1;
 i=2:M-1;
 
 error = 10;
 iter_count = 0;
-sor = 1.25;
+sor = 1.75;
 
 while error > tol
     error = 0;
@@ -36,7 +36,7 @@ while error > tol
             error = max(error, abs(res(i,j)));
         end
     end
-   
+       
     % Reinforce the boundary contitions
     p(:,1)=0;
     p(:,N)=y;
@@ -44,12 +44,16 @@ while error > tol
     p(M,:)=p(M-1,:);
     
     iter_count = iter_count+1;
+    ek(iter_count) = abs((0.25-p(6,6))/0.25);
 end
 
 fprintf('SOR = %1.2f gives %i iterations\n',sor,iter_count);
+plot(ek)
+title('Relative error at center')
+ylabel('e(k)')
+xlabel('k')
+figure
 
-%%
-%Plotting the solution
 surf(x,y,p,'EdgeColor','none');       
 shading interp
 title('2-D Laplace''s equation')
